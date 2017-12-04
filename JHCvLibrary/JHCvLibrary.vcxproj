@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\DataPoint.h" />
+    <ClInclude Include="Include\GeneralAlgorithms.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -165,6 +166,7 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\DataPoint.cpp" />
+    <ClCompile Include="Source\GeneralAlgorithms.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

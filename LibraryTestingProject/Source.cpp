@@ -8,6 +8,8 @@ int main(void)
 
 	auto j = x1 + x2;
 	
-	std::cout << j << std::endl; 
+	std::cout << JHCVLibrary::DataPoint::GetEuclideanDistance(x1, x2, 2, 4);
+	
+
 	return 0;
 }

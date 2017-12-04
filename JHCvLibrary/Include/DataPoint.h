@@ -23,6 +23,10 @@ namespace JHCVLibrary
 		int m_nDimension;
 
 	public:
+		// range interval is of type [in_leftRange, in_rightRange] and zero-based index
+		static double GetEuclideanDistance(const DataPoint &in_left, const DataPoint &in_right, unsigned int in_leftRange, unsigned int in_rightRange);
+
+	public:
 		int GetDimension() const;
 		void AccumulateAndSave(const DataPoint &in_dataPoint);
 		void ScalarMultiplyAndSave(const double in_scalar);

@@ -1,4 +1,5 @@
 #include "../Include/DataPoint.h"
+#include <cmath>
 #include <cassert>
 
 namespace JHCVLibrary
@@ -8,6 +9,22 @@ namespace JHCVLibrary
 	/**** Class Implementations *********/
 	/************************************/
 	/************************************/
+	
+	double DataPoint::GetEuclideanDistance(const DataPoint & in_left, const DataPoint & in_right, unsigned int in_leftRange, unsigned int in_rightRange)
+	{
+		assert(in_left.IsReadyToUse() && in_right.IsReadyToUse());
+		assert(in_left.m_nDimension == in_right.m_nDimension);
+		assert(in_leftRange <= in_rightRange && in_rightRange < in_left.m_nDimension);
+
+		double sum = 0;
+		for (int index = in_leftRange; index <= in_rightRange; ++index)
+		{
+			auto diff = in_left.m_pData[index] - in_right.m_pData[index];
+			sum += (diff * diff);
+		}
+
+		return sqrt(sum);
+	}
 
 	int DataPoint::GetDimension() const
 	{
@@ -134,7 +151,7 @@ namespace JHCVLibrary
 	/////// Operator Overloading /////////
 	//////////////////////////////////////
 	//////////////////////////////////////
-	
+
 	DataPoint DataPoint::operator*(const double in_scalar)
 	{
 		assert(this->IsReadyToUse());
