@@ -30,6 +30,8 @@ namespace JHCVLibrary
 		int GetDimension() const;
 		void AccumulateAndSave(const DataPoint &in_dataPoint);
 		void ScalarMultiplyAndSave(const double in_scalar);
+		void MakeZero();
+		double GetMagnitudeSquare(unsigned int in_leftRange, unsigned int in_rightRange) const;
 
 	public:
 		inline bool IsReadyToUse() const;
@@ -38,7 +40,7 @@ namespace JHCVLibrary
 		DataPoint(const DataPoint &in_dataPoint);
 		DataPoint(std::initializer_list<double> in_argList);
 
-		DataPoint operator*(const double in_scalar);
+		DataPoint operator*(const double in_scalar) const;
 		DataPoint operator+(const DataPoint& in_dataPoint) const;
 		DataPoint operator-(const DataPoint& in_dataPoint) const;
 		double& operator[](const int index);

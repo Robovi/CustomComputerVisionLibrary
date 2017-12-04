@@ -52,6 +52,30 @@ namespace JHCVLibrary
 		}
 	}
 
+	void DataPoint::MakeZero()
+	{
+		assert(IsReadyToUse());
+		for (int index = 0; index < m_nDimension; ++index)
+		{
+			m_pData[index] = 0;
+		}
+	}
+
+	double DataPoint::GetMagnitudeSquare(unsigned int in_leftRange, unsigned int in_rightRange) const
+	{
+		assert(IsReadyToUse());
+		assert(in_leftRange <= in_rightRange && in_leftRange < m_nDimension && in_rightRange < m_nDimension);
+
+		double sum = 0;
+
+		for (int i = in_leftRange; i <= in_rightRange; ++i)
+		{
+			sum += (m_pData[i] * m_pData[i]);
+		}
+
+		return sum;
+	}
+	
 	inline bool DataPoint::IsReadyToUse() const
 	{
 		if (m_pData != nullptr && m_nDimension > 0)
@@ -152,7 +176,7 @@ namespace JHCVLibrary
 	//////////////////////////////////////
 	//////////////////////////////////////
 
-	DataPoint DataPoint::operator*(const double in_scalar)
+	DataPoint DataPoint::operator*(const double in_scalar) const
 	{
 		assert(this->IsReadyToUse());
 		DataPoint retPoint(m_nDimension);

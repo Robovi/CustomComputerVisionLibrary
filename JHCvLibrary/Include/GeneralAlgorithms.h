@@ -24,5 +24,10 @@ namespace JHCVLibrary
 										const std::vector<int> &in_bandwidthsIndexes,
 										const double in_epsilon,
 										DataPoint &out_shiftedPoint);
-	
+
+	JHCVLIBRARY_API	void PerformMeanShiftOverWholePoints(const std::vector<DataPoint> &in_wholePoints,
+														const std::vector<double> &in_bandwidths,
+														const std::vector<int> &in_bandwidthsIndexes, 
+														const double in_epsilon, 
+														std::vector<DataPoint> &out_shiftedPoints);
 }
