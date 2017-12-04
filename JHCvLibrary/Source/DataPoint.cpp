@@ -3,6 +3,12 @@
 
 namespace JHCVLibrary
 {
+	/************************************/
+	/************************************/
+	/**** Class Implementations *********/
+	/************************************/
+	/************************************/
+
 	int DataPoint::GetDimension() const
 	{
 		return m_nDimension;
@@ -37,6 +43,12 @@ namespace JHCVLibrary
 		}
 		return false;
 	}
+
+	//////////////////////////////////////
+	//////////////////////////////////////
+	////// Constructors & Destructors ////
+	//////////////////////////////////////
+	//////////////////////////////////////
 
 	DataPoint::DataPoint(const int in_nDim)
 	{
@@ -107,6 +119,22 @@ namespace JHCVLibrary
 		}
 	}
 
+	DataPoint::~DataPoint()
+	{
+		if (m_pData)
+		{
+			delete m_pData;
+		}
+		m_pData = nullptr;
+		m_nDimension = -1;
+	}
+
+	//////////////////////////////////////
+	//////////////////////////////////////
+	/////// Operator Overloading /////////
+	//////////////////////////////////////
+	//////////////////////////////////////
+	
 	DataPoint DataPoint::operator*(const double in_scalar)
 	{
 		assert(this->IsReadyToUse());
@@ -177,13 +205,33 @@ namespace JHCVLibrary
 		return (*this);
 	}
 
-	JHCVLibrary::DataPoint::~DataPoint()
+
+	/************************************/
+	/************************************/
+	/**** General Functions *************/
+	/************************************/
+	/************************************/
+
+	std::ostream & operator<<(std::ostream & os, const DataPoint & obj)
 	{
-		if (m_pData)
+		int nDimension = obj.GetDimension();
+
+		os << "Dimension = " << obj.GetDimension() << std::endl;
+		os << "Members are below " << std::endl;
+		os << "---------------------------------------" << std::endl;
+
+		for (int index = 0; index < nDimension; ++index)
 		{
-			delete m_pData;
+			if (index == nDimension - 1)
+			{
+				os << obj[index] << ".";
+			}
+			else
+			{
+				os << obj[index] << ", ";
+			}
 		}
-		m_pData = nullptr;
-		m_nDimension = -1;
+
+		return os;
 	}
 }
