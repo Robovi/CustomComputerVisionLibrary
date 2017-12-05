@@ -43,6 +43,12 @@ namespace JHCVLibrary
 	//  
 	//  x0, x1 ==> bandwidth = 10
 	//  x2, x3, x4 ==> bandwidth = 20
+	//  
+	// Example2:
+	// in_bandwidths = { 1 }
+	// in_bandwidthIndexes = { 1 }
+	// x0, x1 => bandwidth = 1
+
 	static double _GaussianKernel(const DataPoint& in_vector, const std::vector<double> &in_bandwidths, const std::vector<int> &in_bandwidthIndexes)
 	{
 		const int nBandwidth = in_bandwidths.size();
@@ -69,7 +75,7 @@ namespace JHCVLibrary
 	// !! Function --> Perform a mean shift procedure to a given initial point based on given the whole set of all points.
 	void PerformMeanShift(const DataPoint & in_initialPoint, const std::vector<DataPoint>& in_wholePoints,
 		const std::vector<double>& in_bandwidths, const std::vector<int>& in_bandwidthsIndexes,
-		const double in_epsilon, DataPoint & out_shiftedPoint)
+		const double in_epsilon, const int in_maxIteration, DataPoint & out_shiftedPoint)
 	{
 		// Default => Gaussian Function
 		// Iterate Over all points in order to compare in_initialPoint with every point
@@ -81,14 +87,16 @@ namespace JHCVLibrary
 		double totalWeight = 0;					// for Division
 		weightedAveragePoint.MakeZero();		// summationPoint = Zero Vector
 		//out_shiftedPoint.MakeZero();			// initialization of output point
+		int nIteration = 0;
 				
-		while (true)
+		while (nIteration < in_maxIteration)
 		{
 			for (int index = 0; index < in_wholePoints.size(); ++index)
 			{
 				const DataPoint& comparePoint = in_wholePoints[index];
 
 				auto diffVector = comparePoint - currentPoint;
+				//auto weight = _GaussianKernel(diffVector, in_bandwidths, in_bandwidthsIndexes);
 				auto weight = _GaussianKernel(diffVector, in_bandwidths, in_bandwidthsIndexes);
 
 				weightedAveragePoint.AccumulateAndSave(comparePoint * weight);
@@ -107,12 +115,13 @@ namespace JHCVLibrary
 			// calculate epsilon
 			currentPoint = weightedAveragePoint;		// shift the current point to the weighted average point
 
+			nIteration++;
 			totalWeight = 0;
 			weightedAveragePoint.MakeZero();
 		}
 	}
 
-	void PerformMeanShiftOverWholePoints(const std::vector<DataPoint>& in_wholePoints, const std::vector<double>& in_bandwidths, const std::vector<int>& in_bandwidthsIndexes, const double in_epsilon, std::vector<DataPoint>& out_shiftedPoints)
+	void PerformMeanShiftOverWholePoints(const std::vector<DataPoint>& in_wholePoints, const std::vector<double>& in_bandwidths, const std::vector<int>& in_bandwidthsIndexes, const double in_epsilon, const int in_maxIterationCount, std::vector<DataPoint>& out_shiftedPoints)
 	{
 		assert(in_wholePoints.size() >= 1 && out_shiftedPoints.size() == 0);
 		assert(in_bandwidths.size() == in_bandwidthsIndexes.size());
@@ -125,13 +134,8 @@ namespace JHCVLibrary
 		{
 			const DataPoint& currentPoint = in_wholePoints[index];
 			
-			PerformMeanShift(currentPoint, in_wholePoints, in_bandwidths, in_bandwidthsIndexes, in_epsilon, shiftedPoint);
+			PerformMeanShift(currentPoint, in_wholePoints, in_bandwidths, in_bandwidthsIndexes, in_epsilon, in_maxIterationCount, shiftedPoint);
 			out_shiftedPoints.push_back(shiftedPoint);
 		}
-	}
-
-
-	
-	
-
+	}	
 }
